@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "../../shared/prisma";
 import { fileUploader } from "../../shared/fileUploader";
 import { Request } from "express";
+import { UserRole, UserStatus } from "@prisma/client";
 
 const cratePatient = async (req: Request) => {
   const hashPassword = bcrypt.hashSync(
@@ -29,6 +30,27 @@ const cratePatient = async (req: Request) => {
   };
 };
 
+const getAllUser = async (params: any, filters: any) => {
+  const { page, limit, sortBY, sortOrder } = params;
+  const { searchTerm, role, status } = filters;
+  const skip = (page - 1) * limit;
+  const result = await prisma.user.findMany({
+    skip: skip,
+    take: limit,
+    where: {
+      email: {
+        contains: searchTerm,
+        mode: "insensitive",
+      },
+      role: role,
+      status: status,
+    },
+    orderBy: sortBY ? { [sortBY]: sortOrder } : { createdAt: "desc" },
+  });
+  return result;
+};
+
 export const UserService = {
   cratePatient,
+  getAllUser,
 };

@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import path from "path";
+import { jwt } from "zod";
 
 dotenv.config({ path: path.join(process.cwd(), ".env") });
 
@@ -12,6 +13,9 @@ const config = {
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
   },
+  jwt: {
+    jwt_secret: process.env.JWT_SECRET,
+  }
 };
 
 export default config;

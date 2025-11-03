@@ -15,5 +15,11 @@ router.post(
     return UserController.cratePatient(req, res, next);
   }
 );
+router.get(
+  "/users",
+  (req: Request, res: Response, next: NextFunction) => {
+    return UserController.getAllUser(req, res, next);
+  }
+);
 
 export const UserRoutes = router;
